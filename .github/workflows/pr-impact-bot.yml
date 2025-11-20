@@ -1,0 +1,46 @@
+name: Impact Analyzer PR Bot
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  analyze-impact:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get PR diff
+        id: diff
+        run: |
+          git fetch origin ${{ github.event.pull_request.base.ref }}
+          git diff origin/${{ github.event.pull_request.base.ref }}...HEAD > pr_diff.txt
+
+      - name: Send diff to Impact Analyzer
+        id: api
+        run: |
+          RESPONSE=$(curl -X POST "https://YOUR_RENDER_BACKEND_URL/analyze" \
+            -H "Content-Type: application/json" \
+            --data "{\"diff\": \"$(sed 's/\"/\\"/g' pr_diff.txt | tr -d '\n')\"}")
+          
+          echo "response<<EOF" >> $GITHUB_OUTPUT
+          echo "$RESPONSE" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Comment on PR
+        uses: peter-evans/create-or-update-comment@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            ### 🔍 Impact Analysis Report
+            **Risk:** ${{ fromJson(steps.api.outputs.response).overall_risk }}%
+
+            **Modules:**
+            ${{ join(fromJson(steps.api.outputs.response).impacted_modules.*.module, '\n') }}
+
+            <sub>🤖 Bot generated report</sub>
