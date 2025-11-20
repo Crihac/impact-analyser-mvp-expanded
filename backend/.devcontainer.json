@@ -1,0 +1,7 @@
+{
+  "name": "Impact Analyzer Devcontainer",
+  "image": "mcr.microsoft.com/vscode/devcontainers/python:0-3.12",
+  "workspaceFolder": "/workspace",
+  "forwardPorts": [8000],
+  "postCreateCommand": "pip install -r requirements.txt"
+}

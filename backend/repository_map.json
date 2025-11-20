@@ -1,0 +1,12 @@
+{
+  "files_to_modules": {
+    "utils/crypto.py": "lib:utils",
+    "services/billing/charge.py": "service:billing",
+    "services/payments/pay_client.py": "service:payments"
+  },
+  "module_descriptions": {
+    "lib:utils": "Utility helpers including crypto",
+    "service:billing": "Billing service",
+    "service:payments": "Payments client service"
+  }
+}
