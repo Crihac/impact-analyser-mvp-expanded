@@ -9,8 +9,8 @@ try:
 except Exception:
     genai = None  # fallback to None so code can still run without the package
 
-GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "").strip() or None
-GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-1.5-flash")
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "AIzaSyCOHpHffCNkInfI9G0IcD-Z3GCr1lh1gVU").strip() or None
+GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")
 GEMINI_TEMPERATURE = float(os.environ.get("GEMINI_TEMPERATURE", 0.2))
 
 client = None
