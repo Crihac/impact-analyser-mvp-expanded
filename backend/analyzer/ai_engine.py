@@ -62,7 +62,7 @@ def call_ai_enrich(analysis: Dict[str, Any]) -> Dict[str, Any]:
 
     try:
         # Use the new SDK format - contents is a list with role/parts
-        response = client.models.generate(
+        response = client.generate(
             model=GEMINI_MODEL,
             input=prompt,
             temperature=GEMINI_TEMPERATURE,
