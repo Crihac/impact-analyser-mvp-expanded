@@ -10,7 +10,7 @@ except Exception:
     genai = None  # fallback to None so code can still run without the package
 
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "AIzaSyCOHpHffCNkInfI9G0IcD-Z3GCr1lh1gVU").strip() or None
-GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")
+GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.0-flash")
 GEMINI_TEMPERATURE = float(os.environ.get("GEMINI_TEMPERATURE", 0.2))
 
 client = None
@@ -62,13 +62,11 @@ def call_ai_enrich(analysis: Dict[str, Any]) -> Dict[str, Any]:
 
     try:
         # Use the new SDK format - contents is a list with role/parts
-        response = client.models.generate_content(
+        response = client.models.generate(
             model=GEMINI_MODEL,
-            contents=[{"role": "user", "parts": [{"text": prompt}]}],
-            config={
-                "temperature": GEMINI_TEMPERATURE,
-                "max_output_tokens": 600
-            }
+            input=prompt,
+            temperature=GEMINI_TEMPERATURE,
+            max_output_tokens=600,
         )
 
         text = response.text.strip()

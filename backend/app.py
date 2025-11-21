@@ -8,9 +8,7 @@ from flask_cors import CORS
 import os
 
 app = Flask(__name__)
-CORS(app, resources={
-    r"/*": {"origins": "https://impact-analyser-mvp-expanded.vercel.app"}
-})
+CORS(app, resources={r"/*": {"origins": ["https://impact-analyser-mvp-expanded.vercel.app", "http://localhost:5173"]}})
 REPO_MAP = load_repo_map_if_exists(os.path.join(os.path.dirname(__file__), "repository_map.json"))
 
 @app.route("/analyze", methods=["POST"])
