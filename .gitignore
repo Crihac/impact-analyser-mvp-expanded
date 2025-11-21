@@ -1,3 +1,6 @@
 .venv/
 __pycache__/
 *.pyc
+fronontend/node_modules/
+.DS_Store
+.env
