@@ -4,10 +4,13 @@ from analyzer.static_analysis import parse_changed_files
 from analyzer.impact_engine import analyze_impact
 from analyzer.ai_engine import call_ai_enrich
 from utils.repo_map_loader import load_repo_map_if_exists
+from flask_cors import CORS
 import os
 
 app = Flask(__name__)
-
+CORS(app, resources={
+    r"/*": {"origins": "https://impact-analyser-mvp-expanded.vercel.app"}
+})
 REPO_MAP = load_repo_map_if_exists(os.path.join(os.path.dirname(__file__), "repository_map.json"))
 
 @app.route("/analyze", methods=["POST"])
